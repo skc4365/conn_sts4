@@ -1,12 +1,13 @@
 # ==============================
-# Build Stage
+# Build Stage : 이미지 생성 단계
 # ==============================
-# 1. 빌드 스테이지
+# 1. 생성하려는 이미지의 베이스이미지를 선택.
 FROM gradle:7.6.1-jdk17 AS builder
 
-# 작업 디렉토리 설정
+# 컨테이너상에서 작업할 경로: 경로 설정후, 모든 명령문의 기준경로가 된다.
 WORKDIR /home/gradle/project
 
+# COPY [소스코드파일] -> [이미지경로에 복사]
 # gradlew 파일과 gradle 디렉토리 복사
 COPY gradlew .
 COPY gradle gradle
@@ -27,7 +28,7 @@ COPY src src
 RUN ./gradlew build --no-daemon -x test
 
 # ==============================
-# Runtime Stage
+# Runtime Stage : 컨테이너 생성 단계
 # ==============================
 # 2. 실행 스테이지
 FROM eclipse-temurin:17-jre-alpine
